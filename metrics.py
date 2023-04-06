@@ -15,6 +15,7 @@ def get_metrics(y_true, y_pred):
 
 
         out_metrics[metric_index] = metric_value
+
     return out_metrics
 
 def auc_m(y_true, y_pred):
