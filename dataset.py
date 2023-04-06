@@ -9,6 +9,9 @@ def loadData(dataname):
     if dataname == 'spambase':
         x, y = loadSpam()
         return x, y
+    if dataname == 'adult':
+        x, y = loadAdult()
+        return x, y
 
 def loadBreastCancer():
     """

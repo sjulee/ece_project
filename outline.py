@@ -5,7 +5,7 @@ import metrics as met
 import prediction
 
 # Datasets to work on
-datasets = ['spambase']
+datasets = ['adult']
 ratios = [100]
 #ratios = [100, 50, 10, 5, 1]
 methods = ['SMOTEBagging', 'RUSBoost']
