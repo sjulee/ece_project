@@ -6,16 +6,18 @@ import prediction
 
 # Datasets to work on
 datasets = ['adult']
-ratios = [100] # ratios = [100, 50, 10, 5, 1]
-methods = ['SMOTEBagging', 'RUSBoost', 'SMOTEBoost', 'UnderBagging', 'RandomForest']
-B = 2  # Number of bootstraps to do
+ratios = [100, 50, 10, 5, 1]
+methods = ['SMOTEBagging', 'RUSBoost', 'SMOTEBoost', 'UnderBagging', 'RandomForest', 'AdaCost']
+METRICS = ['AUC', 'Accuracy', 'F-1 Score', 'Kappa Statistic', 'Precision',
+           'Recall', 'MCC', 'Balanced Accuracy']
+B = 100  # Number of bootstraps to do
 folds = 5
 
 for data in datasets:
     x_orig, y_orig = dataset.loadData(data)
 
     for ratio in ratios:
-        metric_values = np.zeros((len(methods), len(metrics), B, folds))
+        metric_values = np.zeros((len(methods), len(METRICS), B, folds))
         for b in range(B):
             x, y = dataset.bootstrap_data(b, ratio, x_orig, y_orig)
 
@@ -29,6 +31,6 @@ for data in datasets:
                 for method_index in range(len(methods)):
                     method = methods[method_index]
                     y_pred = prediction.get_prediction(x_train, y_train, x_test, method, b)
-                    metric_values[method_index, :, b, i] = met.get_metrics(y_test, y_pred)
+                    metric_values[method_index, :, b, i] = met.get_metrics(y_test, y_pred, METRICS)
 
-        mean_metrics = np.mean(np.mean(metric_values, axis=3), axis=2)
+    np.save("test_file.npy", metric_values)

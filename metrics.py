@@ -1,16 +1,13 @@
 import numpy as np
 from sklearn.metrics import *
 
-METRICS = ['AUC', 'Accuracy', 'F-1 Score', 'Kappa Statistic', 'Precision',
-           'Recall', 'MCC', 'Balanced Accuracy']
-
-def get_metrics(y_true, y_pred):
-    score = np.nan()
+def get_metrics(y_true, y_pred, METRICS):
+    score = np.nan
     y_pred_class = np.round(y_pred)
     out_metrics = np.zeros(len(METRICS))
 
     for metric_index in range(len(METRICS)):
-        metric = metrics[metric_index]
+        metric = METRICS[metric_index]
         if metric == 'AUC':
             score = roc_auc_score(y_true, y_pred)
         elif metric == 'Accuracy':
