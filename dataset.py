@@ -29,6 +29,18 @@ def loadSpam():
     x, y = df.iloc[:,:-1], df.iloc[:,-1]
     return np.array(x), np.array(y)
 
+def loadAdult():
+    """
+    :return:
+    """
+    df = pd.read_csv('data/adult.csv')
+
+    df["Y"] = df["income"].replace("<=50`K", 0, regex=True)
+    df["Y"] = df["Y"].replace(">50K", 1, regex=True)
+
+    x, y = df.iloc[:, :-2], df.iloc[:, -1]
+    return np.array(x), np.array(y)
+
 def bootstrap_data(seed, ratio, x, y):
     n = len(y)
     n_pos = math.ceil(n / (ratio + 1))
