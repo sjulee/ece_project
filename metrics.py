@@ -11,4 +11,5 @@ def get_metrics(y_true, y_pred):
             metric_value = roc_auc_score(y_true, y_pred)
 
         out_metrics[metric_index] = metric_value
+
     return out_metrics
