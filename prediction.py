@@ -1,6 +1,7 @@
 from imblearn.ensemble import BalancedBaggingClassifier, RUSBoostClassifier
 from imblearn.over_sampling import SMOTE
 from SMOTEBoost import SMOTEBoost
+from adacost_pred_prob import AdaCostClassifier
 from sklearn.ensemble import RandomForestClassifier
 
 def get_prediction(x_train, y_train, x_test, method, b):
@@ -24,5 +25,9 @@ def get_prediction(x_train, y_train, x_test, method, b):
         randomforest = RandomForestClassifier(random_state=b)
         randomforest.fit(x_train, y_train)
         y_pred = randomforest.predict_proba(x_test)[:,1]
+    if method == 'AdaCost':
+        adacost = AdaCostClassifier(cost_multiplier=5.0)
+        adacost.fit(x_train, y_train)
+        y_pred = adacost.predict_proba(x_test)[:,1]
 
     return y_pred
