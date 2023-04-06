@@ -1,4 +1,7 @@
 from sklearn.metrics import roc_auc_score
+import numpy as np
+
+metrics = ['AUC']
 
 def get_metrics(y_true, y_pred):
     out_metrics = np.zeros(len(metrics))

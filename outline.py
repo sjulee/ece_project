@@ -1,13 +1,14 @@
 import dataset
 import numpy as np
 from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import roc_auc_score
+import metrics as met
+import prediction
 
 # Datasets to work on
 datasets = ['spambase']
-ratios = [100, 50, 10, 5, 1]
-methods = ['SMOTEBagging']
-#classifiers = ['DecisionTree']
+ratios = [100]
+#ratios = [100, 50, 10, 5, 1]
+methods = ['SMOTEBagging', 'RUSBoost']
 metrics = ['AUC']
 B = 1 # Number of bootstraps to do
 folds = 5
@@ -32,5 +33,5 @@ for data in datasets:
 
                 for method_index in range(len(methods)):
                     method = methods[method_index]
-                    y_pred = get_prediction(x_train, y_train, x_test, method)
-                    metric_values[method_index, :, i] = get_metrics(y_test, y_pred)
+                    y_pred = prediction.get_prediction(x_train, y_train, x_test, method, b)
+                    metric_values[method_index, :, i] = met.get_metrics(y_test, y_pred)
