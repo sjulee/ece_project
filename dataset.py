@@ -38,10 +38,13 @@ def loadAdult():
     """
     df = pd.read_csv('data/adult.csv')
 
-    df["Y"] = df["income"].replace("<=50K", 0, regex=True)
-    df["Y"] = df["Y"].replace(">50K", 1, regex=True)
+    #df["Y"] = df["income"].replace("<=50K", 0, regex=True)
+    #df["Y"] = df["Y"].replace(">50K", 1, regex=True)
 
-    x, y = df.iloc[:, :-2], df.iloc[:, -1]
+    #x, y = df.iloc[:, :-2], df.iloc[:, -1]
+    df = df.apply(lambda x: pd.factorize(x)[0])
+    x, y = df.iloc[:, :-1], df.iloc[:, -1]
+
     return np.array(x), np.array(y)
 
 def bootstrap_data(seed, ratio, x, y):

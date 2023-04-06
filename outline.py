@@ -6,25 +6,20 @@ import prediction
 
 # Datasets to work on
 datasets = ['adult']
-ratios = [100]
-#ratios = [100, 50, 10, 5, 1]
-methods = ['SMOTEBagging', 'RUSBoost']
-metrics = ['AUC']
-B = 1 # Number of bootstraps to do
+ratios = [100] # ratios = [100, 50, 10, 5, 1]
+methods = ['SMOTEBagging', 'RUSBoost', 'SMOTEBoost', 'UnderBagging', 'RandomForest']
+B = 2  # Number of bootstraps to do
 folds = 5
-
-# For each dataset: Conduct bootstrap stratified sampling with following ratios: 0.01, 0.05, 0.1, 0.2, 0.5
-# Each of these will serve as our dataset
 
 for data in datasets:
     x_orig, y_orig = dataset.loadData(data)
 
     for ratio in ratios:
+        metric_values = np.zeros((len(methods), len(metrics), B, folds))
         for b in range(B):
             x, y = dataset.bootstrap_data(b, ratio, x_orig, y_orig)
 
-            skf = StratifiedKFold(n_splits=folds, shuffle = True, random_state = b)
-            metric_values = np.zeros((len(methods), len(metrics), folds))
+            skf = StratifiedKFold(n_splits=folds, shuffle=True, random_state=b)
             for i, (train_index, test_index) in enumerate(skf.split(x, y)):
                 x_train = x[train_index, :]
                 x_test = x[test_index, :]
@@ -34,4 +29,6 @@ for data in datasets:
                 for method_index in range(len(methods)):
                     method = methods[method_index]
                     y_pred = prediction.get_prediction(x_train, y_train, x_test, method, b)
-                    metric_values[method_index, :, i] = met.get_metrics(y_test, y_pred)
+                    metric_values[method_index, :, b, i] = met.get_metrics(y_test, y_pred)
+
+        mean_metrics = np.mean(np.mean(metric_values, axis=3), axis=2)
