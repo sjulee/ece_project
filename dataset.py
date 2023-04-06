@@ -38,7 +38,7 @@ def loadAdult():
     """
     df = pd.read_csv('data/adult.csv')
 
-    df["Y"] = df["income"].replace("<=50`K", 0, regex=True)
+    df["Y"] = df["income"].replace("<=50K", 0, regex=True)
     df["Y"] = df["Y"].replace(">50K", 1, regex=True)
 
     x, y = df.iloc[:, :-2], df.iloc[:, -1]
